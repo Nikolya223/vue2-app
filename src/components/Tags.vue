@@ -19,9 +19,8 @@
                     :key="index" 
                 >mdi-circle</v-icon>  
                 
-                <div class="tags__item"   :key="index + '_'">
-                    <div  
-                        class="tags__item_inner"  
+                <div class="tags__item" :key="index + '_'">
+                    <div class="tags__item_inner"  
                         v-if="item.isActive" 
                         ref="items" 
                         :data-index="index" 
