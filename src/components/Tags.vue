@@ -67,16 +67,23 @@ export default {
     
     methods: {  
         reDraw() { 
+            if (this.tags.length == 0) {
+                this.init();
+            }
+            
             this.tags.forEach( (item, index) => { 
                 if (item.isActive === false) {
                     this.$set(this.tags[index], 'isActive', null);
                 } 
-            })
-            this.$nextTick(() => {  
-                this.$refs.items.forEach( (element ) => { 
-                    this.observer.observe(element); 
+            }) 
+            if ('items' in this.$refs) {
+                this.$nextTick(() => {  
+                    this.$refs.items.forEach( (element ) => { 
+                        this.observer.observe(element); 
+                    })
                 })
-            })
+            }
+            
              
         }, 
         onShow(entries) {
@@ -109,7 +116,6 @@ export default {
             root: this.$refs.container, 
             threshold: 1
         });  
-        this.init();
         
         this.justify = this.align == 'justify' ? 'justify-space-between' : 'justify-start';
     }
