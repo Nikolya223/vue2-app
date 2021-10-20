@@ -9,7 +9,7 @@
         }" 
         ref="container" 
     >
-        <div class="d-flex flex-nowrap" :class="justify"  v-if="isVisible" v-resize="reDraw" >
+        <div class="d-flex flex-nowrap pl-2 pr-2" :class="justify"  v-if="isVisible" v-resize="reDraw" >
             
             <template v-for="(item, index) in tags">
             
