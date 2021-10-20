@@ -15,14 +15,17 @@
             
                 <v-icon class="tags__item_divider mr-3 ml-3" 
                     size="5" 
-                    v-if="index > 0 && item.isActive" 
+                    v-if="index > 0 && item.isActive !== false" 
                     :key="index" 
+                    :class="item.isActive == null ? 'tags__item_divider--hidden' : '' "
+                    
                 >mdi-circle</v-icon>  
                 
                 <div class="tags__item" :key="index + '_'">
                     <div class="tags__item_inner"  
-                        v-if="item.isActive" 
+                        v-if="item.isActive !== false" 
                         ref="items" 
+                        :class="item.isActive == null ? 'tags__item_inner--hidden' : '' "
                         :data-index="index" 
                     >
                     
@@ -63,13 +66,11 @@ export default {
     }),
     
     methods: {  
-        reDraw() {
-            this.$set(this, 'tags', []);
-            this.items.forEach( item => { 
-                this.tags.push({
-                    isActive: true,
-                    data: item
-                })
+        reDraw() { 
+            this.tags.forEach( (item, index) => { 
+                if (item.isActive === false) {
+                    this.$set(this.tags[index], 'isActive', null);
+                } 
             })
             this.$nextTick(() => {  
                 this.$refs.items.forEach( (element ) => { 
@@ -83,6 +84,15 @@ export default {
                 this.$set(this, 'isVisible', true); 
                 this.reDraw()
             }
+        },
+        init() {
+            this.$set(this, 'tags', []);
+            this.items.forEach( item => { 
+                this.tags.push({
+                    isActive: null,
+                    data: item
+                })
+            })
         }
     },
     
@@ -99,6 +109,7 @@ export default {
             root: this.$refs.container, 
             threshold: 1
         });  
+        this.init();
         
         this.justify = this.align == 'justify' ? 'justify-space-between' : 'justify-start';
     }
@@ -110,10 +121,16 @@ export default {
        &__item{ 
             &_divider{
                 font-size: 13px;
+                &--hidden{
+                    visibility: hidden;
+                }
             } 
             &_inner{
                 display: flex;
-                flex-direction: row; 
+                flex-direction: row;  
+                &--hidden{
+                    visibility: hidden;
+                }
             }
             &_title{
                 white-space: nowrap;
